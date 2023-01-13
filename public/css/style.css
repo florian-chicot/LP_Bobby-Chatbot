@@ -1,0 +1,97 @@
+@font-face {
+  font-family: "Roboto";
+  src: url('fonts/Roboto/Roboto-Regular.ttf') format("truetype");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto';
+}
+
+header {
+  padding-top: 1rem;
+}
+
+h1 {
+  text-align: center;
+}
+
+.wrapperBody {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: lightcyan;
+}
+
+main {
+  flex-grow: 1;
+}
+
+.wrapperMain {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid lightblue;
+  border-radius: 0.5rem;
+  height: calc(100% - 2rem);
+  margin: 1rem;
+}
+
+#wrapperChat {
+  flex-grow: 1;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.blockChat {
+  background-color: #6495ED;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  max-width: 75%;
+}
+
+.blockChatBobby {
+  align-self: flex-start;
+  
+}
+
+.blockChatUser {
+  align-self: flex-end;
+  text-align: right;
+}
+
+.formMessage {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.inputMessage {
+  flex-grow: 1;
+  border: none;
+  height: 2rem;
+}
+
+#btn-send {
+  background: none;
+  border: none;
+  border-radius: 1rem;
+}
+
+#btn-send:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+#btn-send svg {
+  width: 3rem;
+  height: 2rem;
+}
+
+footer {
+  text-align: center;
+  font-weight: 800;
+  padding-bottom: 1rem;
+}

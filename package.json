@@ -1,0 +1,21 @@
+{
+  "name": "bobby_v1.0.0",
+  "version": "1.0.0",
+  "description": "ChatBot Bobby",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "keywords": [
+    "Express",
+    "ChatBot"
+  ],
+  "author": "GB",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "path": "^0.12.7"
+  }
+}
