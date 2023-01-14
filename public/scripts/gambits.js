@@ -1,21 +1,5 @@
 const gambits = [
 	{ 
-		'trigger' : /salut|bonjour|hello|hi\s*(.*)/,
-	  'output'  : ['Salut!', 'Bonjour', 'Yo !']
-	},
-	{ 
-		'trigger' : /(comment\s?)?[c]a\sva/,
-	  'output'  : ['Je vais bien merci', 'Très bien et vous ?']
-	},
-	{ 
-		'trigger' : /date|jour/,
-	  'output'  : ['^getDate']
-	},
-	{
-		'trigger': /(?:météo|meteo|quel temps à ?)\s(.+)/,
-		'output':['^getWeather']
-	},
-	{ 
 		'trigger' : /(.*[0-9])[*](.*[0-9])/,
 	  'output'  : ['^getMultiplication']
 	},
@@ -41,4 +25,4 @@ const gambits = [
 	},
 ];
 
-module.exports = {gambits};
+module.exports = { gambits };
