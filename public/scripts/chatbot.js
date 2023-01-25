@@ -114,6 +114,7 @@ function addUserMessage() {
 
   chat.appendChild(p);
 	chat.scrollTop = chat.scrollHeight;
+  textarea.style.height = '24px';
 }
 
 async function addBobbyMessage() {
