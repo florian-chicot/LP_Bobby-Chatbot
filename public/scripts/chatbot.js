@@ -20,6 +20,10 @@ const gambits = [
     'trigger' : /(.+)\s(?:population|pop)/i,
 	  'output'  : ['^getCountryPopulation']
 	},
+	{ 
+    'trigger' : /(.+)\s(?:currency|money|\$)/i,
+	  'output'  : ['^getCountryCurrencies']
+	},
 ];
 /** End gambits */
 
@@ -93,6 +97,44 @@ let utils = {
 				}
 	    }
 	  }
+	},
+	getCountryCurrencies: async (result) => {
+    if (result[1] == 'undefined') {
+      return 'Sorry, I don\'t understand.';
+    } else {
+      let country = result[1];
+      let res = await getCountry(country.replace(/ /g,"%20"));
+      if (res["status"] == '404') {
+        return 'I\'m sorry, I don\'t know the currency used in ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';		
+			} else {
+        let name = await res[0]["name"]["common"];
+				if (res[0].hasOwnProperty('currencies')) {
+					let currencies = await res[0]['currencies'];
+					let currencyList = []
+					for (let currencyCode in currencies) {
+						let currency = currencies[currencyCode];
+						let currencyName = currency.name;
+						let currencySymbol = currency.symbol;
+						currencyList.push({code:currencyCode, name: currencyName, symbol: currencySymbol});
+					}
+					if (currencyList.length == 0) {
+						return name + ' doesn\'t have any official currency.';
+					} else {
+						let currencyInfo = "";
+						for(let i = 0; i < currencyList.length; i++) {
+							currencyInfo += currencyList[i].name + " (" + currencyList[i].symbol + ") ";
+						}
+						if (currencyList.length == 1) {
+							return 'The official currency used in ' + name + ' is : ' + currencyInfo;
+						} else {
+							return 'The official currencies used in ' + name + ' are : ' + currencyInfo;
+						}	
+					}
+				} else {
+					return name + ' doesn\'t have any official currency.';
+				}
+			}
+		}
 	},
 }
 
