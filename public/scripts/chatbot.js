@@ -40,6 +40,10 @@ const gambits = [
     'trigger' : /(.+)\s(?:currency|money|\$)/i,
 	  'output'  : ['^getCountryCurrencies']
 	},
+	{ 
+    'trigger' : /(.+)\s(?:capital)/i,
+	  'output'  : ['^getCountryCapitalCity']
+	},
 ];
 /** End gambits */
 
@@ -148,6 +152,30 @@ let utils = {
 					}
 				} else {
 					return name + ' doesn\'t have any official currency.';
+				}
+			}
+		}
+	},
+	getCountryCapitalCity: async (result) => {
+    if (result[1] == 'undefined') {
+      return 'Sorry, I don\'t understand.';
+    } else {
+      let country = result[1];
+      let res = await getCountry(country.replace(/ /g,"%20"));
+      if (res["status"] == '404') {
+        return 'I\'m sorry, I don\'t know the capital city of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';		
+			} else {
+				let name = await res[0]["name"]["common"];
+				if (res[0].hasOwnProperty('currencies')) {
+					let capital = await res[0]['capital'];
+					let capitalList = Object.keys(capital);
+					if (capitalList.length == 1) {
+						return 'The capital city of ' + name + ' is ' + capital;
+					} else {
+						return 'The capital cities of ' + name + ' are ' + capital.join(', ');
+					}
+				} else {
+					return name + ' doesn\'t have any official capital city.';
 				}
 			}
 		}
