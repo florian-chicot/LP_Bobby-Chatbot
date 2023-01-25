@@ -7,7 +7,11 @@ const gambits = [
 	{
     'trigger' : /(?:fullname|full name|official name)\s(.+)/i,
 	  'output'  : ['^getCountryFullName']
-	}
+	},
+	{ 
+    'trigger' : /(.+)\s(?:french)/i,
+	  'output'  : ['^getCountryFrenchName']
+	},
 ];
 /** End gambits */
 
@@ -16,7 +20,22 @@ let utils = {
   	return Math.floor(Math.random() * (max - min + 1)) + min;
 	},
 	getCountryFullName: async (result) => {
-    // console.log(result[1]);
+    if (result[1] == 'undefined') {
+      return 'Sorry, I don\'t understand.';
+    } else {
+      let country = result[1];
+      let res = await getCountry(country.replace(/ /g,"%20"));
+      if (res["status"] == '404') {
+        return 'I\'m sorry, I don\'t know the official name of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
+      } else {
+        let name = await res[0]["name"]["common"];
+        let official = await res[0]["name"]["official"];
+        return name + '\'s official name is ' + official;
+	    }
+	  }
+	},
+	getCountryFrenchName: async (result) => {
+    console.log(result[1]);
     if (result[1] == 'undefined') {
       return 'Sorry, I don\'t understand.';
     } else {
@@ -24,11 +43,11 @@ let utils = {
       let res = await getCountry(country.replace(/ /g,"%20"));
       // console.log(res);
       if (res["status"] == '404') {
-        return 'I\'m sorry, I don\'t know the official name of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
+        return 'I\'m sorry, I don\'t know the name of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + 'in French. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
       } else {
         let name = await res[0]["name"]["common"];
-        let official = await res[0]["name"]["official"];
-        return name + '\'s official name is ' + official;
+        let frenchName = await res[0]['translations']['fra']['common'];
+        return name + '\'s name in French is ' + frenchName;
 	    }
 	  }
 	}
