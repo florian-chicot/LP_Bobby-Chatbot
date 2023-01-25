@@ -16,13 +16,15 @@ header {
 
 h1 {
   text-align: center;
+  margin-bottom: 1rem;
 }
 
 .wrapperBody {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: lightcyan;
+  background: #1b1b1b;
+  color: #fff;
 }
 
 main {
@@ -43,8 +45,9 @@ main {
   padding: 0.5rem;
   display: flex;
   flex-direction: column;
+  height: 90%;
   gap: 1rem;
-  overflow-X: scroll;
+  overflow: auto;
 }
 
 .blockChat {
@@ -66,17 +69,19 @@ main {
 
 .formMessage {
   display: flex;
+  align-items: center;
+  background-color: silver;
   gap: 0.5rem;
   padding: 1rem;
+  height: 10%;
 }
 
 .inputMessage {
   flex-grow: 1;
   border: none;
-  background-color: silver;
-  height: 3rem;
-  border-radius: 1rem;
-  padding: 0.5rem 1rem;
+  background-color: transparent;
+  height: 24px;
+  overflow-y: hidden;
   resize: none;
 }
 
@@ -88,6 +93,7 @@ main {
   background: none;
   border: none;
   border-radius: 1rem;
+  cursor: pointer;
 }
 
 #btn-send:hover {

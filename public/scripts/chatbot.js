@@ -73,6 +73,7 @@ function addUserMessage() {
   p.classList.add('blockChatUser', 'blockChat')
 
   chat.appendChild(p);
+	chat.scrollTop = chat.scrollHeight;
 }
 
 async function addBobbyMessage() {
@@ -111,6 +112,7 @@ async function addBobbyMessage() {
   p.classList.add('blockChatBobby', 'blockChat')
 
   chat.appendChild(p);
+	chat.scrollTop = chat.scrollHeight;
 
   messageUser.value = "";
 }
@@ -119,3 +121,13 @@ function chatMessage() {
   addUserMessage();
   addBobbyMessage();
 }
+
+let textarea = document.getElementById("inputMessage");
+
+textarea.addEventListener("keydown", (event) => {
+	const keyname = event.key;
+	if (keyname === 'Enter' && !event.shiftKey) {
+		event.preventDefault();
+		chatMessage();
+	}
+})
