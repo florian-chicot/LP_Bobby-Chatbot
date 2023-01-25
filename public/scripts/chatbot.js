@@ -52,6 +52,10 @@ const gambits = [
     'trigger' : /(.+)\s(?:language|languages)/i,
 	  'output'  : ['^getCountryLanguages']
 	},
+	{ 
+    'trigger' : /(.+)\s(?:flag)/i,
+	  'output'  : ['^getCountryFlag']
+	},
 ];
 /** End gambits */
 
@@ -249,6 +253,22 @@ let utils = {
 			}
 		}
 	},
+	getCountryFlag: async (result) => {
+    if (result[1] == 'undefined') {
+      return 'Sorry, I don\'t understand.';
+    } else {
+      let country = result[1];
+      let res = await getCountry(country.replace(/ /g,"%20"));
+      if (res["status"] == '404') {
+        return 'I\'m sorry, I don\'t know ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '\'s flag. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
+      } else {
+        let name = await res[0]["name"]["common"];
+        let flag = await res[0]['flags']['png'];
+        // return '<img src="' + flag + '" alt="' + name + '\'s flag">';
+				return flag;
+	    }
+	  }
+	},
 }
 
 async function getCountry(countryName) {
@@ -290,6 +310,14 @@ async function addBobbyMessage() {
         let func = output.substring(1);
         res = await utils[func](result);
         if (res != 'undefined') {console.log('>', res); }
+				if (output == '^getCountryFlag') {
+					let func = output.substring(1);
+					flagUrl = await utils[func](result);
+					let flagImg = document.createElement('img');
+					flagImg.src = flagUrl;
+					flagImg.width = 200;
+					document.querySelector('#wrapperChat').appendChild(flagImg);
+				}
       } else {
         res = output;
       }
