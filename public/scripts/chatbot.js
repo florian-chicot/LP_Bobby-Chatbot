@@ -177,3 +177,10 @@ textarea.addEventListener('input', function() {
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
 });
+
+let themeToggle = document.getElementById('theme-toggle');
+
+themeToggle.addEventListener('click', function () {
+  document.getElementById("wrapperBody").classList.toggle('dark-theme');
+  document.getElementById("wrapperBody").classList.toggle('light-theme');
+});

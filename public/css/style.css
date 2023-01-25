@@ -15,6 +15,11 @@ header {
   margin-bottom: 1rem;
 }
 
+nav {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 h1 {
   text-align: center;
 }
@@ -115,6 +120,32 @@ footer {
   font-weight: 800;
   padding-bottom: 1rem;
   margin-top: 1rem;
+}
+
+#theme-toggle {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+}
+
+#theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.dark-theme {
+  background-color: #1b1b1b;
+  color: #fff;
+}
+
+.light-theme {
+  background-color: #fff;
+  color: #1b1b1b;
 }
 
 @media screen and (min-width: 768px) {
