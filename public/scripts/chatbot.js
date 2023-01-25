@@ -1,65 +1,44 @@
-// const { gambits } = require('./gambits.js');
-
+/** gambits */
 const gambits = [
 	{ 
-		'trigger' : /(.*[0-9])[*](.*[0-9])/,
-	  'output'  : ['^getMultiplication']
+    'trigger' : /(.+)\s(?:fullname|full name|official name)/i,
+	  'output'  : ['^getCountryFullName']
 	},
-	{ 
-		'trigger' : /(.*[0-9])[\/](.*[0-9])/,
-	  'output'  : ['^getDivision']
-	},
-	{ 
-		'trigger' : /(.*[0-9])[+| + ](.*[0-9])/,
-	  'output'  : ['^getAddition']
-	},
-	{ 
-		'trigger' : /(.*[0-9])[-](.*[0-9])/,
-	  'output'  : ['^getSoustraction']
-	},
-	{ 
-		'trigger' : /(.*[0-9])[^](.*[0-9])/,
-	  'output'  : ['^getPuissance']
-	},
-	{ 
-		'trigger' : /(.*[0-9])[²]/,
-	  'output'  : ['^getSquare']
-	},
+	{
+    'trigger' : /(?:fullname|full name|official name)\s(.+)/i,
+	  'output'  : ['^getCountryFullName']
+	}
 ];
+/** End gambits */
 
 let utils = {
   random: function (min, max) {
   	return Math.floor(Math.random() * (max - min + 1)) + min;
 	},
-	getMultiplication: function (result) {
-		const x = parseFloat(result[1]);
-		const y = parseFloat(result[2]);
-		return (x * y) + '\n';
-	},
-	getDivision: function (result) {
-		const x = parseFloat(result[1]);
-		const y = parseFloat(result[2]);
-		return (x / y) + '\n';
-	},
-	getAddition: function (result) {
-		const x = parseFloat(result[1]);
-		const y = parseFloat(result[2]);
-		return (x + y) + '\n';
-	},
-	getSoustraction: function (result) {
-		const x = parseFloat(result[1]);
-		const y = parseFloat(result[2]);
-		return (x - y) + '\n';
-	},
-	getSquare: function (result) {
-		const x = parseFloat(result[1]);
-		return (x * x) + '\n';
-	},
-	getPuissance: function (result) {
-		const x = parseFloat(result[1]);
-		const y = parseFloat(result[2]);
-		return (Math.pow(x, y)) + '\n';
+	getCountryFullName: async (result) => {
+    // console.log(result[1]);
+    if (result[1] == 'undefined') {
+      return 'Sorry, I don\'t understand.';
+    } else {
+      let country = result[1];
+      let res = await getCountry(country.replace(/ /g,"%20"));
+      // console.log(res);
+      if (res["status"] == '404') {
+        return 'I\'m sorry, I don\'t know the official name of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
+      } else {
+        let name = await res[0]["name"]["common"];
+        let official = await res[0]["name"]["official"];
+        return name + '\'s official name is ' + official;
+	    }
+	  }
 	}
+}
+
+async function getCountry(countryName) {
+  const url = "https://restcountries.com/v3.1/name/" + countryName;
+  // console.log(url);
+  let response = await fetch(url);
+  return await response.json();
 }
 
 function addUserMessage() {
