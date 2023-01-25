@@ -96,7 +96,7 @@ main {
   padding: 0.5rem;
 }
 
-.textarea {
+#textarea {
   border: none;
   background-color: transparent;
   max-height: 72px;
@@ -106,7 +106,7 @@ main {
   width: 100%;
 }
 
-.textarea:focus {
+#textarea:focus {
   outline: none;
 }
 
