@@ -181,6 +181,18 @@ textarea.addEventListener('input', function() {
 let themeToggle = document.getElementById('theme-toggle');
 
 themeToggle.addEventListener('click', function () {
-  document.getElementById("wrapperBody").classList.toggle('dark-theme');
-  document.getElementById("wrapperBody").classList.toggle('light-theme');
+  let wrapperBody = document.getElementById("wrapperBody");
+  let sun = document.getElementById("sun");
+  let moon = document.getElementById("moon");
+
+  wrapperBody.classList.toggle('dark-theme');
+  wrapperBody.classList.toggle('light-theme');
+
+  if (wrapperBody.classList.contains('dark-theme')) {
+    moon.classList.add('display-none');
+    sun.classList.remove('display-none');
+  } else if (wrapperBody.classList.contains('light-theme')) {
+    sun.classList.add('display-none');
+    moon.classList.remove('display-none');
+  }
 });
