@@ -12,6 +12,10 @@ const gambits = [
     'trigger' : /(.+)\s(?:french)/i,
 	  'output'  : ['^getCountryFrenchName']
 	},
+	{ 
+    'trigger' : /(.+)\s(?:continent)/i,
+	  'output'  : ['^getCountryContinent']
+	},
 ];
 /** End gambits */
 
@@ -35,13 +39,11 @@ let utils = {
 	  }
 	},
 	getCountryFrenchName: async (result) => {
-    console.log(result[1]);
     if (result[1] == 'undefined') {
       return 'Sorry, I don\'t understand.';
     } else {
       let country = result[1];
       let res = await getCountry(country.replace(/ /g,"%20"));
-      // console.log(res);
       if (res["status"] == '404') {
         return 'I\'m sorry, I don\'t know the name of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + 'in French. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
       } else {
@@ -50,12 +52,29 @@ let utils = {
         return name + '\'s name in French is ' + frenchName;
 	    }
 	  }
+	},
+	getCountryContinent: async (result) => {
+    if (result[1] == 'undefined') {
+      return 'Sorry, I don\'t understand.';
+    } else {
+      let country = result[1];
+      let res = await getCountry(country.replace(/ /g,"%20"));
+      if (res["status"] == '404') {
+        return 'I\'m sorry, I don\'t know the name of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + 'in French. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
+      } else {
+        let name = await res[0]["name"]["common"];
+        let continent = await res[0]['region'];
+				if (continent == 'Americas') {
+					continent = 'the Americas';
+				}
+        return name + ' is situated in ' + continent;
+	    }
+	  }
 	}
 }
 
 async function getCountry(countryName) {
   const url = "https://restcountries.com/v3.1/name/" + countryName;
-  // console.log(url);
   let response = await fetch(url);
   return await response.json();
 }
