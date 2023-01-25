@@ -16,6 +16,10 @@ const gambits = [
     'trigger' : /(.+)\s(?:continent)/i,
 	  'output'  : ['^getCountryContinent']
 	},
+	{ 
+    'trigger' : /(.+)\s(?:population|pop)/i,
+	  'output'  : ['^getCountryPopulation']
+	},
 ];
 /** End gambits */
 
@@ -60,7 +64,7 @@ let utils = {
       let country = result[1];
       let res = await getCountry(country.replace(/ /g,"%20"));
       if (res["status"] == '404') {
-        return 'I\'m sorry, I don\'t know the name of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + 'in French. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
+        return 'I\'m sorry, I don\'t know the continent of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
       } else {
         let name = await res[0]["name"]["common"];
         let continent = await res[0]['region'];
@@ -70,7 +74,26 @@ let utils = {
         return name + ' is situated in ' + continent;
 	    }
 	  }
-	}
+	},
+	getCountryPopulation: async (result) => {
+    if (result[1] == 'undefined') {
+      return 'Sorry, I don\'t understand.';
+    } else {
+      let country = result[1];
+      let res = await getCountry(country.replace(/ /g,"%20"));
+      if (res["status"] == '404') {
+        return 'I\'m sorry, I don\'t know the number of inhabitants of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
+      } else {
+        let name = await res[0]["name"]["common"];
+        let population = await res[0]['population'];
+				if (population == '0') {
+					return name + ' is uninhabited';
+				} else {
+       		return 'There are ' + population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' inhabitants in ' + name;
+				}
+	    }
+	  }
+	},
 }
 
 async function getCountry(countryName) {
