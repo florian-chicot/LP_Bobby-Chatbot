@@ -64,10 +64,10 @@ let utils = {
 
 function addUserMessage() {
   let chat = document.querySelector('#wrapperChat');
-  let inputMessage = document.querySelector('#inputMessage');
+  let textarea = document.querySelector('#textarea');
 
   let p = document.createElement('p');
-  let pText = document.createTextNode(inputMessage.value);
+  let pText = document.createTextNode(textarea.value);
   p.appendChild(pText);
 
   p.classList.add('blockChatUser', 'blockChat')
@@ -79,7 +79,7 @@ function addUserMessage() {
 async function addBobbyMessage() {
   let found = false;
   let chat = document.querySelector('#wrapperChat');
-  let messageUser = document.querySelector('#inputMessage');
+  let messageUser = document.querySelector('#textarea');
   let res;
 
   for(gambit of gambits) {
@@ -122,7 +122,7 @@ function chatMessage() {
   addBobbyMessage();
 }
 
-let textarea = document.getElementById("inputMessage");
+let textarea = document.getElementById("textarea");
 
 textarea.addEventListener("keydown", (event) => {
 	const keyname = event.key;
