@@ -44,6 +44,10 @@ const gambits = [
     'trigger' : /(.+)\s(?:capital)/i,
 	  'output'  : ['^getCountryCapitalCity']
 	},
+	{ 
+    'trigger' : /(.+)\s(?:language|languages)/i,
+	  'output'  : ['^getCountryLanguages']
+	},
 ];
 /** End gambits */
 
@@ -166,7 +170,7 @@ let utils = {
         return 'I\'m sorry, I don\'t know the capital city of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';		
 			} else {
 				let name = await res[0]["name"]["common"];
-				if (res[0].hasOwnProperty('currencies')) {
+				if (res[0].hasOwnProperty('capital')) {
 					let capital = await res[0]['capital'];
 					let capitalList = Object.keys(capital);
 					if (capitalList.length == 1) {
@@ -176,6 +180,43 @@ let utils = {
 					}
 				} else {
 					return name + ' doesn\'t have any official capital city.';
+				}
+			}
+		}
+	},
+	getCountryLanguages: async (result) => {
+    if (result[1] == 'undefined') {
+      return 'Sorry, I don\'t understand.';
+    } else {
+      let country = result[1];
+      let res = await getCountry(country.replace(/ /g,"%20"));
+      if (res["status"] == '404') {
+        return 'I\'m sorry, I don\'t know the official language(s) of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';		
+			} else {
+				let name = await res[0]["name"]["common"];
+				if (res[0].hasOwnProperty('languages')) {
+					let languages = await res[0]['languages'];
+					let languageList = []
+					for (let languageCode in languages) {
+						let language = languages[languageCode];
+						let languageName = language;
+						languageList.push({name: languageName});
+					}
+					if (languageList.length == 0) {
+						return name + ' doesn\'t have any official language.';
+					} else {
+						let languageInfo = "";
+						for(let i = 0; i < languageList.length; i++) {
+							languageInfo += languageList[i].name + ", ";
+						}
+						if (languageList.length == 1) {
+							return 'The official language used in ' + name + ' is : ' + languageInfo;
+						} else {
+							return 'The official languages used in ' + name + ' are : ' + languageInfo;
+						}	
+					}
+				} else {
+					return name + ' doesn\'t have any official language.';
 				}
 			}
 		}
