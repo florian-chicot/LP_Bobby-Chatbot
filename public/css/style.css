@@ -10,6 +10,7 @@
   font-family: 'Roboto';
 }
 
+/********** HEADER **********/
 header {
   padding-top: 1rem;
   margin-bottom: 1rem;
@@ -24,11 +25,22 @@ h1 {
   text-align: center;
 }
 
-.wrapperBody {
+#theme-toggle {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+}
+
+/********** BODY **********/
+#wrapperBody {
   display: flex;
   flex-direction: column;
-  background: #1b1b1b;
-  color: #fff;
   height: 100vh;
 }
 
@@ -84,7 +96,7 @@ main {
   padding: 0.5rem;
 }
 
-.textarea {
+#textarea {
   border: none;
   background-color: transparent;
   max-height: 72px;
@@ -94,7 +106,7 @@ main {
   width: 100%;
 }
 
-.textarea:focus {
+#textarea:focus {
   outline: none;
 }
 
@@ -115,6 +127,7 @@ main {
   height: 1.5rem;
 }
 
+/********** FOOTER **********/
 footer {
   text-align: center;
   font-weight: 800;
@@ -122,22 +135,8 @@ footer {
   margin-top: 1rem;
 }
 
-#theme-toggle {
-  background-color: transparent;
-  border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  cursor: pointer;
-  width: 2rem;
-  height: 2rem;
-}
 
-#theme-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.4);
-}
-
+/********** TOOLS **********/
 .dark-theme {
   background-color: #1b1b1b;
   color: #fff;
@@ -148,6 +147,11 @@ footer {
   color: #1b1b1b;
 }
 
+.display-none {
+  display: none;
+}
+
+/********** MEDIA **********/
 @media screen and (min-width: 768px) {
   .wrapperMain{
     width: 60%;

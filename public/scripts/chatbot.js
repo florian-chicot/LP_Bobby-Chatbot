@@ -1,8 +1,24 @@
 /** gambits */
 const gambits = [
+  {
+    'trigger' : /^(Hello|Hi|Hey|Greetings|Yo|What's up|Salutations)(,|!)?/i,
+	  'output'  : ['Hey bro! What\'s up?']
+  },
+  {
+    'trigger' : /^(Goodbye|Bye|See you|Catch you later|Talk to you later|Farewell)(,|!)?/i,
+	  'output'  : ['Hey Bro! See you later, have a nice day!']
+  },
 	{ 
-    'trigger' : /(.+)\s(?:fullname|full name|official name)/i,
-	  'output'  : ['^getCountryFullName']
+    'trigger' : /(Let's go)(,|!)?/i,
+	  'output'  : ['Leeeeeeeet\'s goooooo!!']
+	},
+  { 
+    'trigger' : /(Help)(,|!)?/i,
+	  'output'  : ['How can I help you today? I can find you several information about countries around the world like the full name of a country, its French name, the continents of the country, its population, its currency... Write "BobbyCommand" and I will show you examples of commands you can write to get information about countries.']
+	},
+  { 
+    'trigger' : /(BobbyCommand)(,|!)?/i,
+	  'output'  : ['For fullname of country you can write : `full name [country]` |||||| For french name you can write : `[country] french name` |||||| For know the continent of country : `[country] continent` |||||| For population of country : `[country] population`']
 	},
 	{
     'trigger' : /(?:fullname|full name|official name)\s(.+)/i,
@@ -178,13 +194,13 @@ async function addBobbyMessage() {
         res = await utils[func](result);
         if (res != 'undefined') {console.log('>', res); }
       } else {
-        console.log(output + '\n')
+        res = output;
       }
       break;
     }
 
     if(!found){
-      res = "Je n'ai pas compris \n";
+      res = "I don't understand, sorry.";
     }
   }
 
@@ -223,6 +239,18 @@ textarea.addEventListener('input', function() {
 let themeToggle = document.getElementById('theme-toggle');
 
 themeToggle.addEventListener('click', function () {
-  document.getElementById("wrapperBody").classList.toggle('dark-theme');
-  document.getElementById("wrapperBody").classList.toggle('light-theme');
+  let wrapperBody = document.getElementById("wrapperBody");
+  let sun = document.getElementById("sun");
+  let moon = document.getElementById("moon");
+
+  wrapperBody.classList.toggle('dark-theme');
+  wrapperBody.classList.toggle('light-theme');
+
+  if (wrapperBody.classList.contains('dark-theme')) {
+    moon.classList.add('display-none');
+    sun.classList.remove('display-none');
+  } else if (wrapperBody.classList.contains('light-theme')) {
+    sun.classList.add('display-none');
+    moon.classList.remove('display-none');
+  }
 });
