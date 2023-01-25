@@ -45,6 +45,10 @@ const gambits = [
 	  'output'  : ['^getCountryCapitalCity']
 	},
 	{ 
+    'trigger' : /(.+)\s(?:tld)/i,
+	  'output'  : ['^getCountryTopLevelDomain']
+	},
+	{ 
     'trigger' : /(.+)\s(?:language|languages)/i,
 	  'output'  : ['^getCountryLanguages']
 	},
@@ -180,6 +184,30 @@ let utils = {
 					}
 				} else {
 					return name + ' doesn\'t have any official capital city.';
+				}
+			}
+		}
+	},
+	getCountryTopLevelDomain: async (result) => {
+    if (result[1] == 'undefined') {
+      return 'Sorry, I don\'t understand.';
+    } else {
+      let country = result[1];
+      let res = await getCountry(country.replace(/ /g,"%20"));
+      if (res["status"] == '404') {
+        return 'I\'m sorry, I don\'t know the top-level domain(s) of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';		
+			} else {
+				let name = await res[0]["name"]["common"];
+				if (res[0].hasOwnProperty('tld')) {
+					let tld = await res[0]['tld'];
+					let tldList = Object.keys(tld);
+					if (tldList.length == 1) {
+						return 'The top-level domain of ' + name + ' is ' + tld;
+					} else {
+						return 'The top-level domains of ' + name + ' are ' + tld.join(', ');
+					}
+				} else {
+					return name + ' doesn\'t have any official top-level domain.';
 				}
 			}
 		}
