@@ -349,13 +349,20 @@ async function addBobbyMessage() {
 					let coaImg = document.createElement('img');
 					coaImg.src = coaUrl;
 					coaImg.width = 150;
-					document.querySelector('#wrapperChat').appendChild(coaImg)
 					
 					// create message with country name
 					let country = result[1];
 					let r = await getCountry(country.replace(/ /g,"%20"));
 					let name = await r[0]["name"]["common"];
 					res = "This is " + name + "'s coat of arms";
+
+					// check if country has coat of arms
+					if (r[0]['coatOfArms'].hasOwnProperty('png')) {
+						document.querySelector('#wrapperChat').appendChild(coaImg)
+						res = "This is " + name + "'s coat of arms";
+					} else {
+						res = name + ' seems to have no coat of arms.';
+					}
 				} else {
         res = await utils[func](result);
 				}
