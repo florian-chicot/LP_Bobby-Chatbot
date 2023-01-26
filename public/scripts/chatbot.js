@@ -24,6 +24,10 @@ const gambits = [
     'trigger' : /(?:fullname|full name|official name)\s(.+)/i,
 	  'output'  : ['^getCountryFullName']
 	},
+	{
+    'trigger' : /(.+)\s(?:fullname|full name|official name)/i,
+	  'output'  : ['^getCountryFullName']
+	},
 	{ 
     'trigger' : /(.+)\s(?:french)/i,
 	  'output'  : ['^getCountryFrenchName']
@@ -262,9 +266,7 @@ let utils = {
       if (res["status"] == '404') {
         return 'I\'m sorry, I don\'t know ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '\'s flag. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
       } else {
-        let name = await res[0]["name"]["common"];
         let flag = await res[0]['flags']['png'];
-        // return '<img src="' + flag + '" alt="' + name + '\'s flag">';
 				return flag;
 	    }
 	  }
@@ -308,16 +310,24 @@ async function addBobbyMessage() {
 
       if (output[0] == '^') {
         let func = output.substring(1);
-        res = await utils[func](result);
-        if (res != 'undefined') {console.log('>', res); }
 				if (output == '^getCountryFlag') {
 					let func = output.substring(1);
+					// create image from flag url
 					flagUrl = await utils[func](result);
 					let flagImg = document.createElement('img');
 					flagImg.src = flagUrl;
 					flagImg.width = 200;
-					document.querySelector('#wrapperChat').appendChild(flagImg);
+					document.querySelector('#wrapperChat').appendChild(flagImg)
+					
+					// create message with country name
+					let country = result[1];
+					let r = await getCountry(country.replace(/ /g,"%20"));
+					let name = await r[0]["name"]["common"];
+					res = "This is " + name + "'s flag";
+				} else {
+        res = await utils[func](result);
 				}
+				
       } else {
         res = output;
       }
