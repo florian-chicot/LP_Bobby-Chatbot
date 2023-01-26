@@ -60,6 +60,10 @@ const gambits = [
     'trigger' : /(.+)\s(?:flag)/i,
 	  'output'  : ['^getCountryFlag']
 	},
+	{ 
+    'trigger' : /(.+)\s(?:coat)/i,
+	  'output'  : ['^getCountryCoatOfArms']
+	},
 ];
 /** End gambits */
 
@@ -271,6 +275,20 @@ let utils = {
 	    }
 	  }
 	},
+	getCountryCoatOfArms: async (result) => {
+    if (result[1] == 'undefined') {
+      return 'Sorry, I don\'t understand.';
+    } else {
+      let country = result[1];
+      let res = await getCountry(country.replace(/ /g,"%20"));
+      if (res["status"] == '404') {
+        return 'I\'m sorry, I don\'t know ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '\'s flag. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
+      } else {
+        let coa = await res[0]['coatOfArms']['png'];
+				return coa;
+	    }
+	  }
+	},
 }
 
 async function getCountry(countryName) {
@@ -324,10 +342,23 @@ async function addBobbyMessage() {
 					let r = await getCountry(country.replace(/ /g,"%20"));
 					let name = await r[0]["name"]["common"];
 					res = "This is " + name + "'s flag";
+				} else if (output == '^getCountryCoatOfArms') {
+					let func = output.substring(1);
+					// create image from coat of arms url
+					coaUrl = await utils[func](result);
+					let coaImg = document.createElement('img');
+					coaImg.src = coaUrl;
+					coaImg.width = 150;
+					document.querySelector('#wrapperChat').appendChild(coaImg)
+					
+					// create message with country name
+					let country = result[1];
+					let r = await getCountry(country.replace(/ /g,"%20"));
+					let name = await r[0]["name"]["common"];
+					res = "This is " + name + "'s coat of arms";
 				} else {
         res = await utils[func](result);
 				}
-				
       } else {
         res = output;
       }
