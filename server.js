@@ -8,6 +8,10 @@ let app = express()
 app.use(express.static(path.join(__dirname, '/views')))
 app.use(express.static(path.join(__dirname, '/public')))
 
+function random (min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 // test witai
 const witai_token = require('./witai_token.js');
 const handleMessage = async message => {
@@ -29,13 +33,97 @@ function getCountriesNames() {
     .then(response => response.json())
     .then(data => {
       for (let i = 0; i < data.length; i++) {
-        // console.log(data[i]["name"]["common"]);
-        handleMessage('What are the languages spoken in '+ data[i]["name"]["common"] +'?'); // test de message à envoyer à wit.ai
+        let test = [
+          'what is the tld of ' + data[i]["name"]["common"],
+          'what are the tld of ' + data[i]["name"]["common"],
+          'what is the top-level domain of ' + data[i]["name"]["common"],
+          'what are the top-level domains of ' + data[i]["name"]["common"],
+          'what is the top level domain of ' + data[i]["name"]["common"],
+          'what are the top level domains of ' + data[i]["name"]["common"],
+          'what is the official name of ' + data[i]["name"]["common"],
+          'what is the full name of ' + data[i]["name"]["common"],
+          'what is the fullname of ' + data[i]["name"]["common"],
+          'what is the french translation for ' + data[i]["name"]["common"],
+          'what is the name of ' + data[i]["name"]["common"] + ' in french',
+          'what is the translation of ' + data[i]["name"]["common"] + ' in french',
+          'what is the french name of ' + data[i]["name"]["common"],
+          'what are the currencies used in ' + data[i]["name"]["common"],
+          'what is the currency used in ' + data[i]["name"]["common"],
+          'what is the currency of ' + data[i]["name"]["common"],
+          'what is the currency for ' + data[i]["name"]["common"],
+          'what is the capital of ' + data[i]["name"]["common"],
+          'what is the capital city of ' + data[i]["name"]["common"],
+          'what is the capital city for ' + data[i]["name"]["common"],
+          'what is the capital city of ' + data[i]["name"]["common"],
+          'what are the capital cities of ' + data[i]["name"]["common"],
+          'what are the capital cities for ' + data[i]["name"]["common"],
+          'what is the population of ' + data[i]["name"]["common"],
+          'what is the population for ' + data[i]["name"]["common"],
+          'what is the population in ' + data[i]["name"]["common"],
+          'what is the population for ' + data[i]["name"]["common"],
+          'how much people live in ' + data[i]["name"]["common"],
+          'how many people live in ' + data[i]["name"]["common"],
+          'how many does inhabitants ' + data[i]["name"]["common"] + ' have',
+          'what are the languages spoken in ' + data[i]["name"]["common"],
+          'what is the language spoken in ' + data[i]["name"]["common"],
+          'what is the official language of ' + data[i]["name"]["common"],
+          'what is the official language for ' + data[i]["name"]["common"],
+          'in which continent is ' + data[i]["name"]["common"],
+          'what continent is ' + data[i]["name"]["common"] + ' in',
+          'what continent is ' + data[i]["name"]["common"] + ' located in',
+          'what continent is ' + data[i]["name"]["common"] + ' located',
+          'what continent is ' + data[i]["name"]["common"] + ' situated in',
+          'what continent is ' + data[i]["name"]["common"] + ' situated',
+          'what is the tld of ' + data[i]["name"]["common"] + '?',
+          'what are the tld of ' + data[i]["name"]["common"] + '?',
+          'what is the top-level domain of ' + data[i]["name"]["common"] + '?',
+          'what are the top-level domains of ' + data[i]["name"]["common"] + '?',
+          'what is the top level domain of ' + data[i]["name"]["common"] + '?',
+          'what are the top level domains of ' + data[i]["name"]["common"] + '?',
+          'what is the official name of ' + data[i]["name"]["common"] + '?',
+          'what is the full name of ' + data[i]["name"]["common"] + '?',
+          'what is the fullname of ' + data[i]["name"]["common"] + '?',
+          'what is the french translation for ' + data[i]["name"]["common"] + '?',
+          'what is the name of ' + data[i]["name"]["common"] + ' in french' + '?',
+          'what is the translation of ' + data[i]["name"]["common"] + ' in french' + '?',
+          'what is the french name of ' + data[i]["name"]["common"] + '?',
+          'what are the currencies used in ' + data[i]["name"]["common"] + '?',
+          'what is the currency used in ' + data[i]["name"]["common"] + '?',
+          'what is the currency of ' + data[i]["name"]["common"] + '?',
+          'what is the currency for ' + data[i]["name"]["common"] + '?',
+          'what is the capital of ' + data[i]["name"]["common"] + '?',
+          'what is the capital city of ' + data[i]["name"]["common"] + '?',
+          'what is the capital city for ' + data[i]["name"]["common"] + '?',
+          'what is the capital city of ' + data[i]["name"]["common"] + '?',
+          'what are the capital cities of ' + data[i]["name"]["common"] + '?',
+          'what are the capital cities for ' + data[i]["name"]["common"] + '?',
+          'what is the population of ' + data[i]["name"]["common"] + '?',
+          'what is the population for ' + data[i]["name"]["common"] + '?',
+          'what is the population in ' + data[i]["name"]["common"] + '?',
+          'what is the population for ' + data[i]["name"]["common"] + '?',
+          'how much people live in ' + data[i]["name"]["common"] + '?',
+          'how many people live in ' + data[i]["name"]["common"] + '?',
+          'how many does inhabitants ' + data[i]["name"]["common"] + ' have' + '?',
+          'what are the languages spoken in ' + data[i]["name"]["common"] + '?',
+          'what is the language spoken in ' + data[i]["name"]["common"] + '?',
+          'what is the official language of ' + data[i]["name"]["common"] + '?',
+          'what is the official language for ' + data[i]["name"]["common"] + '?',
+          'in which continent is ' + data[i]["name"]["common"] + '?',
+          'what continent is ' + data[i]["name"]["common"] + ' in' + '?',
+          'what continent is ' + data[i]["name"]["common"] + ' located in' + '?',
+          'what continent is ' + data[i]["name"]["common"] + ' located' + '?',
+          'what continent is ' + data[i]["name"]["common"] + ' situated in' + '?',
+          'what continent is ' + data[i]["name"]["common"] + ' situated' + '?',
+          'OKAYYYYY LET\'S GO'
+        ];
+        let index = random(0, test.length-1);
+        let output = test[index];
+        handleMessage(output); // test de message à envoyer à wit.ai
       }
     })
     .catch(error => console.log(error));
 }
-getCountriesNames();
+getCountriesNames(); // test de récupération des noms de pays à envoyer à wit.ai
 
 const handleResponse = response => {
   let name = undefined;
