@@ -21,7 +21,21 @@ const handleMessage = async message => {
     if (error) console.log(error);
   }
 }
-handleMessage('What is the continent where Portugal is located?'); // test de message à envoyer à wit.ai
+// handleMessage('What is the continent where Isle of Man is located?'); // test de message à envoyer à wit.ai
+
+function getCountriesNames() {
+  const url = "https://restcountries.com/v3.1/all";
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      for (let i = 0; i < data.length; i++) {
+        // console.log(data[i]["name"]["common"]);
+        handleMessage('What are the languages spoken in '+ data[i]["name"]["common"] +'?'); // test de message à envoyer à wit.ai
+      }
+    })
+    .catch(error => console.log(error));
+}
+getCountriesNames();
 
 const handleResponse = response => {
   let name = undefined;
