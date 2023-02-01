@@ -8,11 +8,6 @@ let app = express()
 app.use(express.static(path.join(__dirname, '/views')))
 app.use(express.static(path.join(__dirname, '/public')))
 
-function random (min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-// test witai
 const witai_token = require('./witai_token.js');
 const handleMessage = async message => {
   try {
@@ -20,145 +15,266 @@ const handleMessage = async message => {
     // send the message to wit.ai
     const response = await client.message(message);
     if (response) handleResponse(response);
-    // return response;
   } catch (error) {
     if (error) console.log(error);
   }
 }
-// handleMessage('What is the continent where Isle of Man is located?'); // test de message à envoyer à wit.ai
-
-function getCountriesNames() {
-  const url = "https://restcountries.com/v3.1/all";
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      for (let i = 0; i < data.length; i++) {
-        let test = [
-          'what is the tld of ' + data[i]["name"]["common"],
-          'what are the tld of ' + data[i]["name"]["common"],
-          'what is the top-level domain of ' + data[i]["name"]["common"],
-          'what are the top-level domains of ' + data[i]["name"]["common"],
-          'what is the top level domain of ' + data[i]["name"]["common"],
-          'what are the top level domains of ' + data[i]["name"]["common"],
-          'what is the official name of ' + data[i]["name"]["common"],
-          'what is the full name of ' + data[i]["name"]["common"],
-          'what is the fullname of ' + data[i]["name"]["common"],
-          'what is the french translation for ' + data[i]["name"]["common"],
-          'what is the name of ' + data[i]["name"]["common"] + ' in french',
-          'what is the translation of ' + data[i]["name"]["common"] + ' in french',
-          'what is the french name of ' + data[i]["name"]["common"],
-          'what are the currencies used in ' + data[i]["name"]["common"],
-          'what is the currency used in ' + data[i]["name"]["common"],
-          'what is the currency of ' + data[i]["name"]["common"],
-          'what is the currency for ' + data[i]["name"]["common"],
-          'what is the capital of ' + data[i]["name"]["common"],
-          'what is the capital city of ' + data[i]["name"]["common"],
-          'what is the capital city for ' + data[i]["name"]["common"],
-          'what is the capital city of ' + data[i]["name"]["common"],
-          'what are the capital cities of ' + data[i]["name"]["common"],
-          'what are the capital cities for ' + data[i]["name"]["common"],
-          'what is the population of ' + data[i]["name"]["common"],
-          'what is the population for ' + data[i]["name"]["common"],
-          'what is the population in ' + data[i]["name"]["common"],
-          'what is the population for ' + data[i]["name"]["common"],
-          'how much people live in ' + data[i]["name"]["common"],
-          'how many people live in ' + data[i]["name"]["common"],
-          'how many does inhabitants ' + data[i]["name"]["common"] + ' have',
-          'what are the languages spoken in ' + data[i]["name"]["common"],
-          'what is the language spoken in ' + data[i]["name"]["common"],
-          'what is the official language of ' + data[i]["name"]["common"],
-          'what is the official language for ' + data[i]["name"]["common"],
-          'in which continent is ' + data[i]["name"]["common"],
-          'what continent is ' + data[i]["name"]["common"] + ' in',
-          'what continent is ' + data[i]["name"]["common"] + ' located in',
-          'what continent is ' + data[i]["name"]["common"] + ' located',
-          'what continent is ' + data[i]["name"]["common"] + ' situated in',
-          'what continent is ' + data[i]["name"]["common"] + ' situated',
-          'what is the tld of ' + data[i]["name"]["common"] + '?',
-          'what are the tld of ' + data[i]["name"]["common"] + '?',
-          'what is the top-level domain of ' + data[i]["name"]["common"] + '?',
-          'what are the top-level domains of ' + data[i]["name"]["common"] + '?',
-          'what is the top level domain of ' + data[i]["name"]["common"] + '?',
-          'what are the top level domains of ' + data[i]["name"]["common"] + '?',
-          'what is the official name of ' + data[i]["name"]["common"] + '?',
-          'what is the full name of ' + data[i]["name"]["common"] + '?',
-          'what is the fullname of ' + data[i]["name"]["common"] + '?',
-          'what is the french translation for ' + data[i]["name"]["common"] + '?',
-          'what is the name of ' + data[i]["name"]["common"] + ' in french' + '?',
-          'what is the translation of ' + data[i]["name"]["common"] + ' in french' + '?',
-          'what is the french name of ' + data[i]["name"]["common"] + '?',
-          'what are the currencies used in ' + data[i]["name"]["common"] + '?',
-          'what is the currency used in ' + data[i]["name"]["common"] + '?',
-          'what is the currency of ' + data[i]["name"]["common"] + '?',
-          'what is the currency for ' + data[i]["name"]["common"] + '?',
-          'what is the capital of ' + data[i]["name"]["common"] + '?',
-          'what is the capital city of ' + data[i]["name"]["common"] + '?',
-          'what is the capital city for ' + data[i]["name"]["common"] + '?',
-          'what is the capital city of ' + data[i]["name"]["common"] + '?',
-          'what are the capital cities of ' + data[i]["name"]["common"] + '?',
-          'what are the capital cities for ' + data[i]["name"]["common"] + '?',
-          'what is the population of ' + data[i]["name"]["common"] + '?',
-          'what is the population for ' + data[i]["name"]["common"] + '?',
-          'what is the population in ' + data[i]["name"]["common"] + '?',
-          'what is the population for ' + data[i]["name"]["common"] + '?',
-          'how much people live in ' + data[i]["name"]["common"] + '?',
-          'how many people live in ' + data[i]["name"]["common"] + '?',
-          'how many does inhabitants ' + data[i]["name"]["common"] + ' have' + '?',
-          'what are the languages spoken in ' + data[i]["name"]["common"] + '?',
-          'what is the language spoken in ' + data[i]["name"]["common"] + '?',
-          'what is the official language of ' + data[i]["name"]["common"] + '?',
-          'what is the official language for ' + data[i]["name"]["common"] + '?',
-          'in which continent is ' + data[i]["name"]["common"] + '?',
-          'what continent is ' + data[i]["name"]["common"] + ' in' + '?',
-          'what continent is ' + data[i]["name"]["common"] + ' located in' + '?',
-          'what continent is ' + data[i]["name"]["common"] + ' located' + '?',
-          'what continent is ' + data[i]["name"]["common"] + ' situated in' + '?',
-          'what continent is ' + data[i]["name"]["common"] + ' situated' + '?',
-          'OKAYYYYY LET\'S GO'
-        ];
-        let index = random(0, test.length-1);
-        let output = test[index];
-        handleMessage(output); // test de message à envoyer à wit.ai
-      }
-    })
-    .catch(error => console.log(error));
-}
-getCountriesNames(); // test de récupération des noms de pays à envoyer à wit.ai
 
 const handleResponse = response => {
-  let name = undefined;
-  let confidence = 0;
-  Array(response).forEach(item => {
-    if (item.intents.length > 0) {
-      name = item.intents[0].name;
-      confidence = item.intents[0].confidence;
-    }
-    // console.log(response);
-    // console.log(response.entities['country:country']);
-    // console.log(response.entities['country:country'][0].value);
-  })
+  let name = '';
+  let utils = {
+    getCountryFullName: async (result) => {
+      if (result == 'undefined') {
+        return 'Sorry, I don\'t understand.';
+      } else {
+        let country = result;
+        let res = await getCountry(country.replace(/ /g,"%20"));
+        if (res["status"] == '404') {
+          return 'I\'m sorry, I don\'t know the official name of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
+        } else {
+          let name = await res[0]["name"]["common"];
+          let official = await res[0]["name"]["official"];
+          return name + '\'s official name is ' + official;
+        }
+      }
+    },
+    getCountryFrenchName: async (result) => {
+      if (result == 'undefined') {
+        return 'Sorry, I don\'t understand.';
+      } else {
+        let country = result;
+        let res = await getCountry(country.replace(/ /g,"%20"));
+        if (res["status"] == '404') {
+          return 'I\'m sorry, I don\'t know the name of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' in French. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
+        } else {
+          let name = await res[0]["name"]["common"];
+          let frenchName = await res[0]['translations']['fra']['common']; 
+          return name + '\'s name in French is ' + frenchName;
+        }
+      }
+    },
+    getCountryContinent: async (result) => {
+      if (result == 'undefined') {
+        return 'Sorry, I don\'t understand.';
+      } else {
+        let country = result;
+        let res = await getCountry(country.replace(/ /g,"%20"));
+        if (res["status"] == '404') {
+          return 'I\'m sorry, I don\'t know the continent of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
+        } else {
+          let name = await res[0]["name"]["common"];
+          let continent = await res[0]['region'];
+          if (continent == 'Americas') {
+            continent = 'the Americas';
+          }
+          return name + ' is situated in ' + continent;
+        }
+      }
+    },
+    getCountryPopulation: async (result) => {
+      if (result == 'undefined') {
+        return 'Sorry, I don\'t understand.';
+      } else {
+        let country = result;
+        let res = await getCountry(country.replace(/ /g,"%20"));
+        if (res["status"] == '404') {
+          return 'I\'m sorry, I don\'t know the number of inhabitants of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';
+        } else {
+          let name = await res[0]["name"]["common"];
+          let population = await res[0]['population'];
+          if (population == '0') {
+            return name + ' is uninhabited';
+          } else {
+             return 'There are ' + population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' inhabitants in ' + name;
+          }
+        }
+      }
+    },
+    getCountryCurrencies: async (result) => {
+      if (result == 'undefined') {
+        return 'Sorry, I don\'t understand.';
+      } else {
+        let country = result;
+        let res = await getCountry(country.replace(/ /g,"%20"));
+        if (res["status"] == '404') {
+          return 'I\'m sorry, I don\'t know the currency used in ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';		
+        } else {
+          let name = await res[0]["name"]["common"];
+          if (res[0].hasOwnProperty('currencies')) {
+            let currencies = await res[0]['currencies'];
+            let currencyList = []
+            for (let currencyCode in currencies) {
+              let currency = currencies[currencyCode];
+              let currencyName = currency.name;
+              let currencySymbol = currency.symbol;
+              currencyList.push({code:currencyCode, name: currencyName, symbol: currencySymbol});
+            }
+            if (currencyList.length == 0) {
+              return name + ' doesn\'t have any official currency.';
+            } else {
+              let currencyInfo = "";
+              for(let i = 0; i < currencyList.length; i++) {
+                currencyInfo += currencyList[i].name + " (" + currencyList[i].symbol + ") ";
+              }
+              if (currencyList.length == 1) {
+                return 'The official currency used in ' + name + ' is ' + currencyInfo;
+              } else {
+                return 'The official currencies used in ' + name + ' are ' + currencyInfo;
+              }	
+            }
+          } else {
+            return name + ' doesn\'t have any official currency.';
+          }
+        }
+      }
+    },
+    getCountryCapitalCity: async (result) => {
+      if (result == 'undefined') {
+        return 'Sorry, I don\'t understand.';
+      } else {
+        let country = result;
+        let res = await getCountry(country.replace(/ /g,"%20"));
+        if (res["status"] == '404') {
+          return 'I\'m sorry, I don\'t know the capital city of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';		
+        } else {
+          let name = await res[0]["name"]["common"];
+          if (res[0].hasOwnProperty('capital')) {
+            let capital = await res[0]['capital'];
+            let capitalList = Object.keys(capital);
+            if (capitalList.length == 1) {
+              return 'The capital city of ' + name + ' is ' + capital;
+            } else {
+              return 'The capital cities of ' + name + ' are ' + capital.join(', ');
+            }
+          } else {
+            return name + ' doesn\'t have any official capital city.';
+          }
+        }
+      }
+    },
+    getCountryTopLevelDomain: async (result) => {
+      if (result == 'undefined') {
+        return 'Sorry, I don\'t understand.';
+      } else {
+        let country = result;
+        let res = await getCountry(country.replace(/ /g,"%20"));
+        if (res["status"] == '404') {
+          return 'I\'m sorry, I don\'t know the top-level domain(s) of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';		
+        } else {
+          let name = await res[0]["name"]["common"];
+          if (res[0].hasOwnProperty('tld')) {
+            let tld = await res[0]['tld'];
+            let tldList = Object.keys(tld);
+            if (tldList.length == 1) {
+              return 'The top-level domain of ' + name + ' is ' + tld;
+            } else {
+              return 'The top-level domains of ' + name + ' are ' + tld.join(', ');
+            }
+          } else {
+            return name + ' doesn\'t have any official top-level domain.';
+          }
+        }
+      }
+    },
+    getCountryLanguages: async (result) => {
+      if (result == 'undefined') {
+        return 'Sorry, I don\'t understand.';
+      } else {
+        let country = result;
+        let res = await getCountry(country.replace(/ /g,"%20"));
+        if (res["status"] == '404') {
+          return 'I\'m sorry, I don\'t know the official language(s) of ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + '. Maybe ' + country.charAt(0).toUpperCase()+country.slice(1).toLowerCase() + ' does not exist.';		
+        } else {
+          let name = await res[0]["name"]["common"];
+          if (res[0].hasOwnProperty('languages')) {
+            let languages = await res[0]['languages'];
+            let languageList = []
+            for (let languageCode in languages) {
+              let language = languages[languageCode];
+              let languageName = language;
+              languageList.push({name: languageName});
+            }
+            if (languageList.length == 0) {
+              return name + ' doesn\'t have any official language.';
+            } else {
+              let languageInfo = "";
+              for(let i = 0; i < languageList.length; i++) {
+                languageInfo += languageList[i].name + ", ";
+              }
+              if (languageList.length == 1) {
+                return 'The official language used in ' + name + ' is : ' + languageInfo;
+              } else {
+                return 'The official languages used in ' + name + ' are : ' + languageInfo;
+              }	
+            }
+          } else {
+            return name + ' doesn\'t have any official language.';
+          }
+        }
+      }
+    },
+	}
 
-  switch (name) {
-    case 'official_name':
-      return console.log(response.entities['country:country'][0].value +'\'s official name is xxxx');
-    case 'french_name':
-      return console.log(response.entities['country:country'][0].value + '\'s name translated in French is xxxx');
-    case 'languages':
-      return console.log('The official languages used in '+ response.entities['country:country'][0].value + ' are xxxx');
-    case 'currency':
-      return console.log('The official currency used in '+ response.entities['country:country'][0].value + ' is xxxx');
-    case 'population':
-      return console.log('There are xxxx inhabitants in '+ response.entities['country:country'][0].value);
-    case 'tld':
-      return console.log('The top-level domain of '+ response.entities['country:country'][0].value + ' is xxxx');
-    case 'continent':
-      return console.log(response.entities['country:country'][0].value + ' is situated in xxxx');
-    case 'capital':
-      return console.log('The capital city of '+ response.entities['country:country'][0].value + ' is xxxx');
-    default:
-      return console.log('Sorry, I don\'t understand.');
+  async function getCountry(countryName) {
+    const url = "https://restcountries.com/v3.1/name/" + countryName;
+    let response = await fetch(url).then(res => res.json());
+    return await response;
+  }
+  if (response.intents[0].name == 'official_name') {
+    let official_name = utils.getCountryFullName(response.entities['country:country'][0].value);
+    official_name.then(function(result) {
+      return console.log(result);
+    });
+  } else if (response.intents[0].name == 'french_name') {
+    let french_name = utils.getCountryFrenchName(response.entities['country:country'][0].value);
+    french_name.then(function(result) {
+      return console.log(result);
+    });
+  } else if (response.intents[0].name == 'continent') {
+    let continent = utils.getCountryContinent(response.entities['country:country'][0].value);
+    continent.then(function(result) {
+      return console.log(result);
+    });
+  } else if (response.intents[0].name == 'population') {
+    let population = utils.getCountryPopulation(response.entities['country:country'][0].value);
+    population.then(function(result) {
+      return console.log(result);
+    });
+  } else if (response.intents[0].name == 'currency') {
+    let currency = utils.getCountryCurrencies(response.entities['country:country'][0].value);
+    currency.then(function(result) {
+      return console.log(result);
+    });
+  } else if (response.intents[0].name == 'capital') {
+    let capital = utils.getCountryCapitalCity(response.entities['country:country'][0].value);
+    capital.then(function(result) {
+      return console.log(result);
+    });
+  } else if (response.intents[0].name == 'tld') {
+    let tld = utils.getCountryTopLevelDomain(response.entities['country:country'][0].value);
+    tld.then(function(result) {
+      return console.log(result);
+    });
+  } else if (response.intents[0].name == 'languages') {
+    let languages = utils.getCountryLanguages(response.entities['country:country'][0].value);
+    languages.then(function(result) {
+      return console.log(result);
+    });
+  } else if (!response.intents[0].hasOwnProperty('name')) {
+    return console.log('Hello, how can I help you?');
+  } else {
+    return console.log('Sorry, I don\'t understand.');
   }
 }
+
+const readline = require('readline');
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+rl.on('line', async function(input) {
+  handleMessage(input);
+});
 
 app.listen(config.express.port, config.express.ip, () => {
   console.log('Server listening on ' + config.express.ip + ':' + config.express.port)
