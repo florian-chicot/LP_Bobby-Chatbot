@@ -1,3 +1,5 @@
+getCountry = require('./getCountry.js');
+
 let utils = {
   getCountryFullName: async (result) => {
     if (result == 'undefined') {
@@ -219,11 +221,4 @@ let utils = {
   },
 };
 
-async function getCountry(countryName) {
-  const url = "https://restcountries.com/v3.1/name/" + countryName;
-  let response = await fetch(url).then(res => res.json());
-  return await response;
-}
-
 module.exports = utils;
-

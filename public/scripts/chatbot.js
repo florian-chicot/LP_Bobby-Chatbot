@@ -1,8 +1,5 @@
-async function getCountry(countryName) {
-  const url = "https://restcountries.com/v3.1/name/" + countryName;
-  let response = await fetch(url);
-  return await response.json();
-}
+handleMessage = require('./handleMessage.js');
+getCountry = require('./getCountry.js');
 
 function addUserMessage() {
   let chat = document.querySelector('#wrapperChat');
@@ -19,13 +16,16 @@ function addUserMessage() {
   textarea.style.height = '24px';
 }
 
-handleMessage = require('./handleMessage');
-
 async function addBobbyMessage() {
   let chat = document.querySelector('#wrapperChat');
   let messageUser = document.querySelector('#textarea');
   let res;
-  res = await handleMessage(messageUser.value);
+  try {
+    res = await handleMessage(messageUser.value);
+  } catch (error) {
+    console.log(error)
+    res = "Sorry, I don\'t understand."
+  }
 
   if (res.startsWith('https://flagcdn.com', 0)) {
     console.log(res)
@@ -37,6 +37,7 @@ async function addBobbyMessage() {
     document.querySelector('#wrapperChat').appendChild(flagImg)
     res = "This is " + country[0]["name"]["common"] + "'s flag";
   }
+
   let p = document.createElement('p');
   let pText = document.createTextNode(res);
   p.appendChild(pText);
