@@ -1,4 +1,4 @@
-getCountry = require('./getCountry.js');
+getCountry = require('./getCountryByName.js');
 
 let utils = {
   getCountryFullName: async (result) => {

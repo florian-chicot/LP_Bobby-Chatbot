@@ -1,5 +1,5 @@
 handleMessage = require('./handleMessage.js');
-getCountry = require('./getCountry.js');
+getCountryByCode = require('./getCountryByCode.js');
 
 function addUserMessage() {
   let chat = document.querySelector('#wrapperChat');
@@ -30,7 +30,7 @@ async function addBobbyMessage() {
   if (res.startsWith('https://flagcdn.com', 0)) {
     console.log(res)
     countryCode = res.charAt(res.length-6) + res.charAt(res.length-5);
-    country = await getCountry(countryCode);
+    country = await getCountryByCode(countryCode);
     let flagImg = document.createElement('img');
     flagImg.src = res;
     flagImg.width = 200;

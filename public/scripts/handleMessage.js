@@ -11,35 +11,25 @@ async function handleMessage(message) {
   // return the response
   if (response) {
     if (response.intents[0].name == 'official_name') {
-      let official_name = await utils.getCountryFullName(response.entities['country:country'][0].value);
-      return official_name;  
+      return await utils.getCountryFullName(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'french_name') {
-      let french_name = await utils.getCountryFrenchName(response.entities['country:country'][0].value);
-      return french_name;  
+      return await utils.getCountryFrenchName(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'continent') {
-      let continent = await utils.getCountryContinent(response.entities['country:country'][0].value);
-      return continent;
+      return await utils.getCountryContinent(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'population') {
-      let population = await utils.getCountryPopulation(response.entities['country:country'][0].value);
-      return population;
+      return await utils.getCountryPopulation(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'currency') {
-      let currency = await utils.getCountryCurrencies(response.entities['country:country'][0].value);
-      return currency;
+      return await utils.getCountryCurrencies(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'capital') {
-      let capital = await utils.getCountryCapitalCity(response.entities['country:country'][0].value);
-      return capital;
+      return await utils.getCountryCapitalCity(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'tld') {
-      let tld = await utils.getCountryTopLevelDomain(response.entities['country:country'][0].value);
-      return tld;
+      return await utils.getCountryTopLevelDomain(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'languages') {
-      let languages = await utils.getCountryLanguages(response.entities['country:country'][0].value);
-      return languages;
+      return await utils.getCountryLanguages(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'flag') {
-      let flag = await utils.getCountryFlag(response.entities['country:country'][0].value);
-      return flag;
+      return await utils.getCountryFlag(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'coat_of_arms') {
-      let coat = await utils.getCountryCoatOfArms(response.entities['country:country'][0].value);
-      return coat;
+      return await utils.getCountryCoatOfArms(response.entities['country:country'][0].value);
     }
   };
 }

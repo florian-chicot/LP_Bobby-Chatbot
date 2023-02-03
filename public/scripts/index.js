@@ -14821,7 +14821,7 @@ module.exports = function whichTypedArray(value) {
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"available-typed-arrays":10,"call-bind/callBound":19,"for-each":22,"gopd":26,"has-tostringtag/shams":29,"is-typed-array":42}],97:[function(require,module,exports){
 handleMessage = require('./handleMessage.js');
-getCountry = require('./getCountry.js');
+getCountryByCode = require('./getCountryByCode.js');
 
 function addUserMessage() {
   let chat = document.querySelector('#wrapperChat');
@@ -14852,7 +14852,7 @@ async function addBobbyMessage() {
   if (res.startsWith('https://flagcdn.com', 0)) {
     console.log(res)
     countryCode = res.charAt(res.length-6) + res.charAt(res.length-5);
-    country = await getCountry(countryCode);
+    country = await getCountryByCode(countryCode);
     let flagImg = document.createElement('img');
     flagImg.src = res;
     flagImg.width = 200;
@@ -14910,15 +14910,23 @@ themeToggle.addEventListener('click', function () {
     moon.classList.remove('display-none');
   }
 });
-},{"./getCountry.js":98,"./handleMessage.js":99}],98:[function(require,module,exports){
-async function getCountry(countryName) {
+},{"./getCountryByCode.js":98,"./handleMessage.js":100}],98:[function(require,module,exports){
+async function getCountryByCode(countryCode) {
+  const url = "https://restcountries.com/v3.1/alpha/" + countryCode;
+  let response = await fetch(url);
+  return await response.json();
+}
+
+module.exports = getCountryByCode;
+},{}],99:[function(require,module,exports){
+async function getCountryByName(countryName) {
   const url = "https://restcountries.com/v3.1/name/" + countryName;
   let response = await fetch(url);
   return await response.json();
 }
 
-module.exports = getCountry;
-},{}],99:[function(require,module,exports){
+module.exports = getCountryByName;
+},{}],100:[function(require,module,exports){
 
 const pkg = require('node-wit') // importation de la librairie node-wit
 const { Wit } = pkg; // déclaration de la librairie node-wit
@@ -14932,42 +14940,32 @@ async function handleMessage(message) {
   // return the response
   if (response) {
     if (response.intents[0].name == 'official_name') {
-      let official_name = await utils.getCountryFullName(response.entities['country:country'][0].value);
-      return official_name;  
+      return await utils.getCountryFullName(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'french_name') {
-      let french_name = await utils.getCountryFrenchName(response.entities['country:country'][0].value);
-      return french_name;  
+      return await utils.getCountryFrenchName(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'continent') {
-      let continent = await utils.getCountryContinent(response.entities['country:country'][0].value);
-      return continent;
+      return await utils.getCountryContinent(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'population') {
-      let population = await utils.getCountryPopulation(response.entities['country:country'][0].value);
-      return population;
+      return await utils.getCountryPopulation(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'currency') {
-      let currency = await utils.getCountryCurrencies(response.entities['country:country'][0].value);
-      return currency;
+      return await utils.getCountryCurrencies(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'capital') {
-      let capital = await utils.getCountryCapitalCity(response.entities['country:country'][0].value);
-      return capital;
+      return await utils.getCountryCapitalCity(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'tld') {
-      let tld = await utils.getCountryTopLevelDomain(response.entities['country:country'][0].value);
-      return tld;
+      return await utils.getCountryTopLevelDomain(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'languages') {
-      let languages = await utils.getCountryLanguages(response.entities['country:country'][0].value);
-      return languages;
+      return await utils.getCountryLanguages(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'flag') {
-      let flag = await utils.getCountryFlag(response.entities['country:country'][0].value);
-      return flag;
+      return await utils.getCountryFlag(response.entities['country:country'][0].value);
     } else if (response.intents[0].name == 'coat_of_arms') {
-      let coat = await utils.getCountryCoatOfArms(response.entities['country:country'][0].value);
-      return coat;
+      return await utils.getCountryCoatOfArms(response.entities['country:country'][0].value);
     }
   };
 }
 
 module.exports = handleMessage;
-},{"../../witai_token.js":101,"./utils.js":100,"node-wit":47}],100:[function(require,module,exports){
-getCountry = require('./getCountry.js');
+},{"../../witai_token.js":102,"./utils.js":101,"node-wit":47}],101:[function(require,module,exports){
+getCountry = require('./getCountryByName.js');
 
 let utils = {
   getCountryFullName: async (result) => {
@@ -15191,7 +15189,7 @@ let utils = {
 };
 
 module.exports = utils;
-},{"./getCountry.js":98}],101:[function(require,module,exports){
+},{"./getCountryByName.js":99}],102:[function(require,module,exports){
 witai_token = 'WLA562IJNEVB5CIBH7IN2FLJJBEM22ML';
 
 module.exports = witai_token;
